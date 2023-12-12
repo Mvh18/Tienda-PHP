@@ -1,6 +1,9 @@
 <?php
 
 require_once 'autoload.php';
+require_once 'Views/layout/header.php';
+require_once 'Views/layout/sidebar.php';
+
 
 if (isset($_GET['controller'])) {
     $nombre_controlador = $_GET['controller'] . 'Controller';
@@ -23,3 +26,5 @@ if (class_exists($nombre_controlador)) {
 } else {
     echo 'La página que buscas no existe';
 }
+
+require_once 'Views/layout/footer.php';
