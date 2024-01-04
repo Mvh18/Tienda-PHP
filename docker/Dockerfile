@@ -19,6 +19,7 @@ RUN apt-get update \
     && docker-php-ext-install zip
 
 RUN docker-php-ext-install mbstring
+RUN docker-php-ext-install mysqli
 RUN docker-php-ext-install zip
 RUN docker-php-ext-install gd
 
