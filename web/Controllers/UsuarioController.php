@@ -6,7 +6,7 @@ class UsuarioController
 {
     public function index()
     {
-        echo 'Controlador usuarios, Acción index';
+        //echo 'Controlador usuarios, Acción index';
     }
 
     public function register()
@@ -16,6 +16,8 @@ class UsuarioController
 
     public function save()
     {
+        ob_start();
+        
         if (isset($_POST)) {
             $usuario = new Usuario();
 
@@ -35,6 +37,13 @@ class UsuarioController
             $_SESSION['register'] = "failed";
         }
 
-        header("Location:" . base_url . 'Usuario/register');
+        ob_end_clean();
+
+        // Registra una función de devolución de llamada para manejar las cabeceras antes de enviarlas
+        header_register_callback(function () {
+            // Redirige después de completar la lógica de registro
+            header('Location: ' . base_url . 'Usuario/register');
+            exit(); // Asegúrate de salir después de la redirección
+        });
     }
 }
