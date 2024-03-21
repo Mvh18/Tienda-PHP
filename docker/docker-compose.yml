@@ -4,6 +4,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    container_name: tienda_web
     ports:
       - "81:80"
     volumes:
@@ -15,6 +16,7 @@ services:
 
   db:
     image: mysql:latest
+    container_name: tienda_db
     environment:
       MYSQL_ROOT_PASSWORD: kraxx181818
     networks:
@@ -24,6 +26,7 @@ services:
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
+    container_name: tienda_phpmyadmin
     links:
       - db
     ports:
