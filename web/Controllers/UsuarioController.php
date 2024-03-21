@@ -16,8 +16,7 @@ class UsuarioController
 
     public function save()
     {
-        ob_start();
-        
+
         if (isset($_POST)) {
             $usuario = new Usuario();
 
@@ -37,13 +36,49 @@ class UsuarioController
             $_SESSION['register'] = "failed";
         }
 
-        ob_end_clean();
+        header(('Location: ' . base_url));
+    }
 
-        // Registra una función de devolución de llamada para manejar las cabeceras antes de enviarlas
-        header_register_callback(function () {
-            // Redirige después de completar la lógica de registro
-            header('Location: ' . base_url . 'Usuario/register');
-            exit(); // Asegúrate de salir después de la redirección
-        });
+    public function login()
+    {
+        if (isset($_POST)) {
+            //Identificar al usuario            
+            //Consulta db
+            $usuario = new Usuario();
+            $usuario->setEmail($_POST['email']);
+            $usuario->setPassword($_POST['password']);
+
+            $identity = $usuario->login();
+
+
+            //var_dump($identity);
+
+            //Crear una sesión
+
+            if ($identity && is_object($identity)) {
+                $_SESSION['identity'] = $identity;
+
+                if ($identity->rol == 'admin') {
+                    $_SESSION['admin'] = true;
+                }
+            } else {
+                $_SESSION['error_login'] = 'Identificación fallida !!';
+            }
+        }
+    }
+
+    public function logout()
+    {
+        if (isset($_SESSION['identity'])) {
+            unset($_SESSION['identity']);
+        }
+
+        if (isset($_SESSION['admin'])) {
+            unset($_SESSION['admin']);
+        }
+
+        ob_start();
+        header('Location: ' . base_url);
+        ob_end_flush();
     }
 }
